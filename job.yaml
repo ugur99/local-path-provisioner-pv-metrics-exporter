@@ -1,0 +1,42 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job
+spec:
+  ttlSecondsAfterFinished: 50
+  template:
+    spec:
+      containers:
+      - name: job
+        image: python:3.7
+        command: ["sh","-c","sleep 6000"]
+        env:
+          - name: REGISTRY
+            value: "192.168.0.24:32457"
+          - name: VOLUME_CLAIMS
+            value: "postgresql,fluentd"
+          - name: NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: POD_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+        volumeMounts:
+        - mountPath: /node
+          name: nodedata
+        - mountPath: /workspace
+          name: git
+      restartPolicy: Never
+      #nodeName: NODE
+      volumes:
+      - name: nodedata
+        hostPath:
+          path: /opt/local-path-provisioner
+      - name: git
+        gitRepo:
+          repository: https://github.com/luksa/kubia-website-example.git
+          revision: master
+          directory: .
+  backoffLimit: 1

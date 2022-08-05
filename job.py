@@ -1,11 +1,11 @@
-import os, time
-import prometheus_client as prom
 from subprocess import run
+import os, time
 from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+import prometheus_client as prom
 
 
-registry = CollectorRegistry()
 directory = '/node/'
+registry = CollectorRegistry()
 
 def calculation(dir):
     process = run(['du', '-sb', dir], capture_output=True, text=True)
