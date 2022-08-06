@@ -55,16 +55,17 @@ while True:
   for pvc in pvcs.items:
   
       if pvc.spec.storage_class_name == storageClass:
+        if pvc.status.phase == "Bound":
   
-        capacity = convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
-        gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
-        push_to_gateway(registryUrl, job="projectbeta", registry=registry)
-  
-        if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
-          node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
-  
-        all_pvc_list += [pvc.metadata.name]
-        all_pvc_list_string = ",".join(all_pvc_list)
+          capacity = convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
+          gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
+          push_to_gateway(registryUrl, job="projectbeta", registry=registry)
+    
+          if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
+            node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
+    
+          all_pvc_list += [pvc.metadata.name]
+          all_pvc_list_string = ",".join(all_pvc_list)
   
   for node in node_list:
   
