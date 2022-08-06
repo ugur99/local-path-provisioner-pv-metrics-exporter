@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: lp-exporter
+  name: lp-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: lp-exporter
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: lp-exporter
+    spec:
+      containers:
+      - image: python:3.7
+        name: python
+        env:
+          - name: PROMETHEUS_PUSHGATEWAY_URL
+            value: "192.168.0.24:32457"
+          - name: STORAGE_CLASS_NAME
+            value: "local-path"

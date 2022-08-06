@@ -3,18 +3,18 @@ kind: Job
 metadata:
   name: job
 spec:
-  ttlSecondsAfterFinished: 50
+  ttlSecondsAfterFinished: 10
   template:
     spec:
       containers:
       - name: job
-        image: python:3.7
-        command: ["sh","-c","sleep 6000"]
+        image: ugurozturk99/lp-exporter-job:v0.0.2
+        command: ["python3", "job.py"]
         env:
-          - name: REGISTRY
+          - name: PROMETHEUS_PUSHGATEWAY_URL
             value: "192.168.0.24:32457"
-          - name: VOLUME_CLAIMS
-            value: "postgresql,fluentd"
+          - name: PVC_NAMES
+            value: "CLAIMS"
           - name: NODE_NAME
             valueFrom:
               fieldRef:
@@ -26,17 +26,10 @@ spec:
         volumeMounts:
         - mountPath: /node
           name: nodedata
-        - mountPath: /workspace
-          name: git
       restartPolicy: Never
-      nodeName: NODE
+      nodeName: NODES
       volumes:
       - name: nodedata
         hostPath:
           path: /opt/local-path-provisioner
-      - name: git
-        gitRepo:
-          repository: https://github.com/luksa/kubia-website-example.git
-          revision: master
-          directory: .
   backoffLimit: 1

@@ -14,16 +14,17 @@ def calculation(dir):
 
 for key in os.environ:
     nodeName = os.environ["NODE_NAME"]
-    pvc = os.environ["VOLUME_CLAIMS"]
+    pvc = os.environ["PVC_NAMES"]
     podName = os.environ["POD_NAME"]
-    registryUrl = os.environ["REGISTRY"]
+    registryUrl = os.environ["PROMETHEUS_PUSHGATEWAY_URL"]
 
 claims=pvc.split(',')
-gauge = prom.Gauge('local_volume_stats_used_bytes', 'local volume storage usage', ['persistentvolumeclaim','persistentvolume','node'], registry=registry)
+gauge = prom.Gauge('local_volume_stats_used_bytes', 'local volume storage usage', ['persistentvolumeclaim','node'], registry=registry)
 
 for i in os.listdir(directory):
     for j in range(len(claims)):
+        # IF PVC NAMES ARE NOT UNIQUE, THIS WILL NOT WORK
         if claims[j] in i:
             filename=(directory+"/"+i)
-            gauge.labels(claims[j],i,nodeName).set(calculation(filename))
+            gauge.labels(claims[j],nodeName).set(calculation(filename))
             push_to_gateway(registryUrl, job="projectalpha", registry=registry)
