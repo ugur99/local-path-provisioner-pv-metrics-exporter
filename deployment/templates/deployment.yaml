@@ -19,6 +19,7 @@ spec:
       labels:
         app: lp-exporter
     spec:
+      serviceAccountName: exporter
       containers:
       - image: python:3.7
         name: python

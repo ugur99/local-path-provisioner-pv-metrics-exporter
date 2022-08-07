@@ -8,11 +8,9 @@ spec:
     spec:
       containers:
       - name: job
-        image: ugurozturk99/lp-exporter-job:v0.0.2
+        image: ugurozturk99/lp-exporter-job:v0.0.6
         command: ["python3", "job.py"]
         env:
-          - name: PROMETHEUS_PUSHGATEWAY_URL
-            value: "192.168.0.24:32457"
           - name: PVC_NAMES
             value: "CLAIMS"
           - name: NODE_NAME

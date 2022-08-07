@@ -16,7 +16,9 @@ for key in os.environ:
     nodeName = os.environ["NODE_NAME"]
     pvc = os.environ["PVC_NAMES"]
     podName = os.environ["POD_NAME"]
-    registryUrl = os.environ["PROMETHEUS_PUSHGATEWAY_URL"]
+    #registryUrl = os.environ["PROMETHEUS_PUSHGATEWAY_URL"]
+    registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+
 
 claims=pvc.split(',')
 gauge = prom.Gauge('local_volume_stats_used_bytes', 'local volume storage usage', ['persistentvolumeclaim','node'], registry=registry)

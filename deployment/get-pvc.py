@@ -4,29 +4,30 @@ from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import prometheus_client as prom
 
 config.load_kube_config("templates/kubeconfig")
+
+#configuration = client.Configuration()
+#configuration.api_key["authorization"] = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjM3UFI0RTUtWVctTnNQeTZ1ZWU5RndieGtzUUhGODB4SGtYb1dSVTVjYnMifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjU5ODYwMTk4LCJpYXQiOjE2NTk4NTY1OTgsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJzaXN5cGh1cyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJleHBvcnRlciIsInVpZCI6ImYzMTcxNTM1LTU0ZTktNGQyNi05NGQwLWE2NjUyNjU5ZTM2NiJ9fSwibmJmIjoxNjU5ODU2NTk4LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6c2lzeXBodXM6ZXhwb3J0ZXIifQ.mgWh6SFMF3xhFue7Q17Dy2WU0rec04nPIkNpkyvrjDH43Voo30DwJgcc3icyXk5AOJBMxxpDQhLla9950C6TvAuvba7Q1cZgNzdMw7NdN6Dhz7A27haXgW6pZGlCI3qsKVJfLAXoy3aknTI4CUu3N0fV8FoekC5ic3slzgtSlKCi8C344IGmLKaRupJ0dAkKZYYB9igFkS9SLnSizkkI78oVjcoj9dJiHisrsB7k-4NwCiXrhxeZZQcFRemswNPFCxL32d_Va6FBX-BvxDvcCAP78hQE-4k4tO4sHcCiQUKzZOn6cJGxKJEKlbUF-cvaw_eAWgP17VhmnyFepsVV6Q'
+#configuration.api_key_prefix['authorization'] = 'Bearer'
+#configuration.host = 'https://192.168.0.24:6443'
+#configuration.ssl_ca_cert = '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+
 v1 = client.CoreV1Api()
+#v1 = client.CoreV1Api(client.ApiClient(configuration))
+
 registry = CollectorRegistry()
 pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 gauge = prom.Gauge('local_volume_stats_capacity_bytes', 'local volume capacity', ['persistentvolumeclaim','node'], registry=registry)
 node_list = []
 all_pvc_list = []
 
-# ------------------------------------------------------------ SA Integration
-#configuration = client.Configuration()
-#configuration.api_key["authorization"] = '<bearer_token>'
-#configuration.api_key_prefix['authorization'] = 'Bearer'
-#configuration.host = 'https://<ip_of_api_server>'
-#configuration.ssl_ca_cert = '<path_to_cluster_ca_certificate>'
-#v1 = client.CoreV1Api(client.ApiClient(configuration))
-# ------------------------------------------------------------
-
 
 for key in os.environ:
     if os.environ["STORAGE_CLASS_NAME"]:
       storageClass = os.environ["STORAGE_CLASS_NAME"]
-    if os.environ["PROMETHEUS_PUSHGATEWAY_URL"]:
-      registryUrl = os.environ["PROMETHEUS_PUSHGATEWAY_URL"]
+    if os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"]:
+      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
+#registryUrl = "10.99.84.233:9091"
 
 def convert_size_string_to_bytes(size):
     unit = size[-2:]
@@ -87,4 +88,3 @@ while True:
     utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus",verbose=True)
     time.sleep(30)
   
-
