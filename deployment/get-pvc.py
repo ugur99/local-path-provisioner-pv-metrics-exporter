@@ -3,16 +3,16 @@ import time, os, shutil
 from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 import prometheus_client as prom
 
-config.load_kube_config("templates/kubeconfig")
+#config.load_kube_config("templates/kubeconfig")
 
-#configuration = client.Configuration()
-#configuration.api_key["authorization"] = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjM3UFI0RTUtWVctTnNQeTZ1ZWU5RndieGtzUUhGODB4SGtYb1dSVTVjYnMifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjU5ODYwMTk4LCJpYXQiOjE2NTk4NTY1OTgsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJzaXN5cGh1cyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJleHBvcnRlciIsInVpZCI6ImYzMTcxNTM1LTU0ZTktNGQyNi05NGQwLWE2NjUyNjU5ZTM2NiJ9fSwibmJmIjoxNjU5ODU2NTk4LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6c2lzeXBodXM6ZXhwb3J0ZXIifQ.mgWh6SFMF3xhFue7Q17Dy2WU0rec04nPIkNpkyvrjDH43Voo30DwJgcc3icyXk5AOJBMxxpDQhLla9950C6TvAuvba7Q1cZgNzdMw7NdN6Dhz7A27haXgW6pZGlCI3qsKVJfLAXoy3aknTI4CUu3N0fV8FoekC5ic3slzgtSlKCi8C344IGmLKaRupJ0dAkKZYYB9igFkS9SLnSizkkI78oVjcoj9dJiHisrsB7k-4NwCiXrhxeZZQcFRemswNPFCxL32d_Va6FBX-BvxDvcCAP78hQE-4k4tO4sHcCiQUKzZOn6cJGxKJEKlbUF-cvaw_eAWgP17VhmnyFepsVV6Q'
-#configuration.api_key_prefix['authorization'] = 'Bearer'
-#configuration.host = 'https://192.168.0.24:6443'
-#configuration.ssl_ca_cert = '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
+configuration = client.Configuration()
+configuration.api_key["authorization"] = 'eyJhbGciOiJSUzI1NiIsImtpZCI6IjM3UFI0RTUtWVctTnNQeTZ1ZWU5RndieGtzUUhGODB4SGtYb1dSVTVjYnMifQ.eyJhdWQiOlsiaHR0cHM6Ly9rdWJlcm5ldGVzLmRlZmF1bHQuc3ZjLmNsdXN0ZXIubG9jYWwiXSwiZXhwIjoxNjU5ODcxMzU0LCJpYXQiOjE2NTk4Njc3NTQsImlzcyI6Imh0dHBzOi8va3ViZXJuZXRlcy5kZWZhdWx0LnN2Yy5jbHVzdGVyLmxvY2FsIiwia3ViZXJuZXRlcy5pbyI6eyJuYW1lc3BhY2UiOiJzaXN5cGh1cyIsInNlcnZpY2VhY2NvdW50Ijp7Im5hbWUiOiJleHBvcnRlciIsInVpZCI6ImYzMTcxNTM1LTU0ZTktNGQyNi05NGQwLWE2NjUyNjU5ZTM2NiJ9fSwibmJmIjoxNjU5ODY3NzU0LCJzdWIiOiJzeXN0ZW06c2VydmljZWFjY291bnQ6c2lzeXBodXM6ZXhwb3J0ZXIifQ.ELmVpeIM1cLkqdCyKPV1qzYDrrwN2xL2FbdUZomomKQqkCrWox4oN77VEE6k426UpXtbUNl9oSh4OWWHRtXwLsL4mYeZ_FW8zpnqRMksKe9Ajd32xJup1TxXoUbIFPKUSztDD5YBQkQ7shYHPqlULTounUUvFaUyXb1CC5VtRn29amZUfhXhtP9goyz6BqmXx_bB14qp0qCGr2kvNKT3NWSIcKKcpj2K4hMZcD1AKMYG5kObq0rgJM3r3zgRwbvyk571V-xLDSPyt3goXWKsQe8kGvBXwkDAyyozE1RyVfW3X0JUz9WChzQUJU_15Cyd7MBjAZQsFBSZ0ISxwW6PSA'
+configuration.api_key_prefix['authorization'] = 'Bearer'
+configuration.host = 'https://192.168.0.24:6443'
+configuration.ssl_ca_cert = '/var/run/secrets/kubernetes.io/serviceaccount/ca.crt'
 
-v1 = client.CoreV1Api()
-#v1 = client.CoreV1Api(client.ApiClient(configuration))
+#v1 = client.CoreV1Api()
+v1 = client.CoreV1Api(client.ApiClient(configuration))
 
 registry = CollectorRegistry()
 pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
@@ -70,8 +70,8 @@ while True:
   
   for node in node_list:
   
-    k8s_client = client.ApiClient()
-  
+    #k8s_client = client.ApiClient()
+    k8s_client = client.ApiClient(configuration)
     shutil.copyfile("templates/job.yaml","job.yaml")
   
     yaml_file = 'job.yaml'
