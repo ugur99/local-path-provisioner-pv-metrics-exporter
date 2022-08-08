@@ -445,7 +445,7 @@
           },
           "percentage": false,
           "pluginVersion": "9.0.4",
-          "pointradius": 3,
+          "pointradius": 1,
           "points": true,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -538,7 +538,7 @@
           },
           "percentage": false,
           "pluginVersion": "9.0.4",
-          "pointradius": 3,
+          "pointradius": 1,
           "points": true,
           "renderer": "flot",
           "seriesOverrides": [],
@@ -782,7 +782,7 @@
       "type": "row"
     }
   ],
-  "refresh": "5s",
+  "refresh": "1m",
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -811,8 +811,8 @@
       {
         "current": {
           "selected": false,
-          "text": "hello-pvc",
-          "value": "hello-pvc"
+          "text": "sisyphus-pvc",
+          "value": "sisyphus-pvc"
         },
         "datasource": {
           "type": "prometheus",
@@ -841,7 +841,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -872,6 +872,6 @@
   "timezone": "utc",
   "title": "Kubernetes / Local Persistent Volumes",
   "uid": "peR80gTGk",
-  "version": 30,
+  "version": 33,
   "weekStart": ""
 }

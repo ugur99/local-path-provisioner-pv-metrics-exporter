@@ -1,0 +1,22 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  labels:
+    app: kube-prometheus-stack
+    release: my-kube-prometheus-stack
+  name: my-kube-prometheus-stack-local-pv
+spec:
+  groups:
+  - name: local-pv
+    rules:
+    - alert: localPVUsage
+      expr: |
+        100 * local_volume_stats_used_bytes{} / ignoring(job) local_volume_stats_capacity_bytes{} > 80
+      for: 5m
+      labels:
+        severity: critical
+      annotations:
+        description: No Input From Container.
+        summary: "Volume Usage of the Following PVs is more than 80%"
+        message: |
+                   Volume Usage of {{ $labels.persistentvolumeclaim}} is {{ $value }}
