@@ -1,6 +1,6 @@
 # Local Path Provisioner Metrics Exporter
 
-This is a simple metrics exporter solution for the [local-path-provisioner](https://github.com/rancher/local-path-provisioner) or any `hostPath` storage solution. It generates `local_volume_stats_capacity_bytes` and `local_volume_stats_used_bytes` metrics for the persistent volumes `(PV)`  based on the `hostPath` solution.
+This is a simple metrics exporter solution for the [local-path-provisioner](https://github.com/rancher/local-path-provisioner) or any `hostPath` storage solution. It generates `local_volume_stats_capacity_bytes` and `local_volume_stats_used_bytes` metrics for the persistent volumes `PV`  based on the `hostPath` solution.
 
 ## Why?
 
