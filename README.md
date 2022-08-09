@@ -9,9 +9,17 @@ Since the local-path-provisioner is a `hostPath` solution, it does not have any 
 
 Another alternative is `local` typed ones, but there are some limitations to use `local` type volumes too as stated in [sig-storage-local-static-provisioner best practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md). So unless we have seperate partitions for each PV, we cannot use the metrics `kubelet_volume_stats.*` effectively, because it will show the total capacity and used bytes of the whole partition not the PV. Also It does not support `dynamic provisioning` and thats the another critical point for development and testing environments.
 
-
 ## Architecture
+We have two main components in this solution:
+
+### lp-exporter
+ The first one is the `lp-exporter` which talks to the API Server to get PVC names which are used local-path storage class and requested capacities respectively. It generates `local_volume_stats_capacity_bytes` metrics and pushes it to [pushgateway](https://github.com/prometheus/pushgateway). To get the used bytes for per PV, it generates a `job` for each different nodes that PVs are provisioned.
+ 
+### lp-exporter-job
+ Job is a simple code block which runs on each node and gets the used bytes for each PVs that are provisioned on that node. It pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
 ![kubeconfiggenerator](src/images/architecture-01.png)
+>Simple Illustration of the architecture
+
 
 ## How to use?
 
