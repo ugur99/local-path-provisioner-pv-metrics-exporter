@@ -15,7 +15,7 @@ We have two main components in this solution:
  The first one is the `lp-exporter` which talks to the API Server to get PVC names which are used local-path storage class and requested capacities respectively. It generates `local_volume_stats_capacity_bytes` metrics and pushes it to [pushgateway](https://github.com/prometheus/pushgateway). To get the used bytes for per PV, it generates a `job` for each different nodes that PVs are provisioned.
  
 ### lp-exporter-job
- Job is a simple code block which runs on each node and gets the used bytes for each PVs that are provisioned on that node. It pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
+ Job is a simple code block to get used bytes for each PVs that are provisioned on that node and it pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
 ![mainarchitecture](src/images/architecture-01.png)
 >Simple Illustration of the architecture
 
