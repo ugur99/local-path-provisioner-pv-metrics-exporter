@@ -17,9 +17,13 @@ We have two main components in this solution:
  
 ### lp-exporter-job
  Job is a simple code block which runs on each node and gets the used bytes for each PVs that are provisioned on that node. It pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
-![kubeconfiggenerator](src/images/architecture-01.png)
+![mainarchitecture](src/images/architecture-01.png)
 >Simple Illustration of the architecture
 
+## Grafana Dashboard && Prometheus Alerts
+Useful grafana dashboards and alerts can be defined using these metrics. You can find some examples of [dashboard](grafana/dashboard.json) and [alert](alertmanager/PrometheusRule.yml) rules. 
+![grafana](src/images/grafana-01.png)
+![alertmanager](src/images/alertmanager-01.png)
 
 ## How to use?
 
