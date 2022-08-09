@@ -10,7 +10,7 @@ Since the local-path-provisioner is a `hostPath` solution, it does not have any 
 Another alternative is `local` typed ones, but there are some limitations to use `local` type volumes as stated in [sig-storage-local-static-provisioner best practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md). So unless we have seperate partitions for each PV, we cannot use the metrics `kubelet_volume_stats.*` effectively, because it will show the total capacity and used bytes of the whole partition not the PV. Also It does not support `dynamic provisioning` and thats the another critical point for development and testing environments.
 
 
-## Architectureasdfds
+## Architecture
 ![kubeconfiggenerator](src/images/architecture-01.png)
 
 ## How to use?
