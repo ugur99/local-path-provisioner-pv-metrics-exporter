@@ -1,4 +1,5 @@
 # Local Path Provisioner Metrics Exporter
+[![Docker Image CI](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml)
 
 This is a simple metrics exporter solution for the [local-path-provisioner](https://github.com/rancher/local-path-provisioner) or any `hostPath` storage solution. It generates `local_volume_stats_capacity_bytes` and `local_volume_stats_used_bytes` metrics for the persistent volumes `PV`  based on the `hostPath` solution.
 
