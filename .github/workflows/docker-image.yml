@@ -25,7 +25,7 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Build for lb-exporter
+    - name: Build for lb-exporter-deployment
       run: |
         docker build -t ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} -f ./src/deployment/Dockerfile ./src/deployment/
         docker tag  ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} ugurozturk99/lp-exporter-deployment:latest

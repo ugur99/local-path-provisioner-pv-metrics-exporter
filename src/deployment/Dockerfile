@@ -1,6 +1,6 @@
 FROM python:3.7
 WORKDIR /app
-COPY src/deployment/requirements.txt requirements.txt
+COPY src/deployment/requirements.txt src/deployment/requirements.txt
 RUN apt-get update \
     && apt-get upgrade -y \
     && pip3 install -r requirements.txt
