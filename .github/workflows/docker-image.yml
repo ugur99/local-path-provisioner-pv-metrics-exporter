@@ -29,15 +29,15 @@ jobs:
       run: |
         cd src/deployment && docker build -t ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} -f Dockerfile .
         docker tag  ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} ugurozturk99/lp-exporter-deployment:latest
-   # - name: Run Trivy vulnerability scanner for lb-exporter-deployment
-   #   uses: aquasecurity/trivy-action@master
-   #   with:
-   #     image-ref: 'ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}'
-   #     format: 'table'
-   #     exit-code: '1'
-   #     ignore-unfixed: true
-   #     vuln-type: 'os,library'
-   #     severity: 'CRITICAL,HIGH'
+    - name: Run Trivy vulnerability scanner for lb-exporter-deployment
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
     - name: Push for lb-exporter-deployment
       run: |
         docker push ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} 
@@ -46,15 +46,15 @@ jobs:
       run: |
         cd src/job && docker build -t ugurozturk99/lp-exporter-job:v${{ env.VERSION }} -f Dockerfile .
         docker tag  ugurozturk99/lp-exporter-job:v${{ env.VERSION }} ugurozturk99/lp-exporter-job:latest
-    #- name: Run Trivy vulnerability scanner for lb-exporter-job
-    #  uses: aquasecurity/trivy-action@master
-    #  with:
-    #    image-ref: 'ugurozturk99/lp-exporter-job:v${{ env.VERSION }}'
-    #    format: 'table'
-    #    exit-code: '1'
-    #    ignore-unfixed: true
-    #    vuln-type: 'os,library'
-    #    severity: 'CRITICAL,HIGH'
+    - name: Run Trivy vulnerability scanner for lb-exporter-job
+      uses: aquasecurity/trivy-action@master
+      with:
+        image-ref: 'ugurozturk99/lp-exporter-job:v${{ env.VERSION }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
     - name: Push for lb-exporter-job
       run: |
         docker push ugurozturk99/lp-exporter-job:v${{ env.VERSION }} 
