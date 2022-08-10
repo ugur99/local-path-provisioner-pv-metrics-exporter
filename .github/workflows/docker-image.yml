@@ -43,7 +43,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}
+        tags: ugurozturk99/lp-exporter-deployment:latest
         file: ./src/deployment/Dockerfile
 #    - name: Build and Push for lb-exporter-job
 #      uses: docker/build-push-action@v3
