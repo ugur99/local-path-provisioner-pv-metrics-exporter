@@ -44,7 +44,7 @@ jobs:
         docker push ugurozturk99/lp-exporter-deployment:latest
     - name: Build for lb-exporter-job
       run: |
-        cd ../job && docker build -t ugurozturk99/lp-exporter-job:v${{ env.VERSION }} -f Dockerfile .
+        cd src/job && docker build -t ugurozturk99/lp-exporter-job:v${{ env.VERSION }} -f Dockerfile .
         docker tag  ugurozturk99/lp-exporter-job:v${{ env.VERSION }} ugurozturk99/lp-exporter-job:latest
     - name: Run Trivy vulnerability scanner for lb-exporter-job
       uses: aquasecurity/trivy-action@master
