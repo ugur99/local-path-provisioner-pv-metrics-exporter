@@ -28,7 +28,8 @@ jobs:
     - name: Build for lb-exporter
       run: |
         docker build -t ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} -f ./src/deployment/Dockerfile .
-    - name: Run Trivy vulnerability scanner
+        docker tag  ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} ugurozturk99/lp-exporter-deployment:latest
+    - name: Run Trivy vulnerability scanner for lb-exporter-deployment
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: 'ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}'
@@ -37,15 +38,24 @@ jobs:
         ignore-unfixed: true
         vuln-type: 'os,library'
         severity: 'CRITICAL,HIGH'
-    - name:  Push for lb-exporter
-      uses: docker/build-push-action@v3
+    - name: Push for lb-exporter-deployment
+      run: |
+        docker push ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} 
+        docker push ugurozturk99/lp-exporter-deployment:latest
+    - name: Build for lb-exporter-job
+      run: |
+        docker build -t ugurozturk99/lp-exporter-job:v${{ env.VERSION }} -f ./src/job/Dockerfile .
+        docker tag  ugurozturk99/lp-exporter-job:v${{ env.VERSION }} ugurozturk99/lp-exporter-job:latest
+    - name: Run Trivy vulnerability scanner for lb-exporter-job
+      uses: aquasecurity/trivy-action@master
       with:
-        push: true
-        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}
-        file: ./src/deployment/Dockerfile
-#    - name: Build and Push for lb-exporter-job
-#      uses: docker/build-push-action@v3
-#      with:
-#        push: true
-#        tags: ugurozturk99/lb-exporter-job:latest,ugurozturk99/lp-exporter-job:v${{ env.VERSION }}
-#        file: ./src/job/Dockerfile
+        image-ref: 'ugurozturk99/lp-exporter-job:v${{ env.VERSION }}'
+        format: 'table'
+        exit-code: '1'
+        ignore-unfixed: true
+        vuln-type: 'os,library'
+        severity: 'CRITICAL,HIGH'
+    - name: Push for lb-exporter-job
+      run: |
+        docker push ugurozturk99/lp-exporter-job:v${{ env.VERSION }} 
+        docker push ugurozturk99/lp-exporter-job:latest
