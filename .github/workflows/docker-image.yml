@@ -11,6 +11,8 @@ jobs:
     name: Build docker image and push this image to docker.io container registry
     runs-on: ubuntu-latest
     steps:
+    - name: Check Out Source Code
+      uses: actions/checkout@v2
     - name: Set variables
       run: |
         VER=$(cat env | awk {'print$2'})
