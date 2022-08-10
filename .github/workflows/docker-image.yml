@@ -4,11 +4,15 @@ on:
   push:
     branches: [ "main" ]
 
+
 jobs:
+
   build:
     name: Build docker image and push this image to docker.io container registry
     runs-on: ubuntu-latest
     steps:
+    - name: Dotenv Action
+      uses: falti/dotenv-action@v0.2.8
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Login to DockerHub
@@ -20,11 +24,11 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ github.run.id }}
+        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}
         file: ./src/deployment/Dockerfile
     - name: Build and Push for lb-exporter-job
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ugurozturk99/lb-exporter-job:latest,ugurozturk99/lp-exporter-job:v${{ github.run.id }}
+        tags: ugurozturk99/lb-exporter-job:latest,ugurozturk99/lp-exporter-job:v${{ env.VERSION }}
         file: ./src/job/Dockerfile
