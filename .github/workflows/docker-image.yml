@@ -11,8 +11,8 @@ jobs:
     name: Build docker image and push this image to docker.io container registry
     runs-on: ubuntu-latest
     steps:
-    - name: Dotenv Action
-      uses: falti/dotenv-action@v0.2.8
+    - name: Environment Variables from Dotenv
+      uses: c-py/action-dotenv-to-setenv@v3
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
     - name: Login to DockerHub
