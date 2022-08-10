@@ -13,7 +13,7 @@ jobs:
     steps:
     - name: Set variables
       run: |
-        echo "ls -al" 
+        echo ls -al
         VER=$(cat .env | awk {'print$2'})
         echo "VERSION=$VER" >> $GITHUB_ENV
     - name: Set up Docker Buildx
