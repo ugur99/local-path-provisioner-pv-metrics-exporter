@@ -27,7 +27,7 @@ jobs:
         password: ${{ secrets.DOCKERHUB_TOKEN }}
     - name: Build for lb-exporter
       run: |
-        docker build -t ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} -f ./src/deployment/Dockerfile .
+        docker build -t ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }} -f ./src/deployment/Dockerfile .
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
