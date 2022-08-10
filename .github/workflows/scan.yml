@@ -20,26 +20,21 @@ jobs:
           VER=$(cat env | awk {'print$2'})
           echo $VER
           echo "VERSION=$VER" >> $GITHUB_ENV
-      #- name: Upload Trivy scan results to GitHub Security tab
-      #  uses: github/codeql-action/upload-sarif@v1
-      #  with:
-      #    sarif_file: 'trivy-results-docker.sarif'
-      - name: Run Trivy vulnerability scanner in fs mode
-        uses: anandg112/trivy-action@feat/add-skip-dirs-option
+      - name: Run Trivy vulnerability scanner for lb-exporter-deployment
+        uses: aquasecurity/trivy-action@master
         with:
-          scan-type: 'fs'
-#          scan-ref: '.'
+          image-ref: 'ugurozturk99/lp-exporter-deployment:v${{ env.VERSION }}'
+          format: 'table'
+          exit-code: '1'
           ignore-unfixed: true
-          format: 'template'
-          template: '@/contrib/sarif.tpl'
-          output: 'trivy-results-fs.sarif'
-          severity: 'CRITICAL'
-          skip-dirs: "ignored-dir"
-      #- name: Upload Trivy scan results to GitHub Security tab
-      #  uses: github/codeql-action/upload-sarif@v1
-      #  with:
-      #    sarif_file: 'trivy-results-fs.sarif'
-      #- name: DEBUG Upload Trivy scan results to GitHub Security tab
-      #  uses: github/codeql-action/upload-sarif@v1
-      #  with:
-      #    sarif_file: 'debug-trivy-results.sarif'
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+      - name: Run Trivy vulnerability scanner for lb-exporter-job
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'ugurozturk99/lp-exporter-job:v${{ env.VERSION }}'
+          format: 'table'
+          exit-code: '1'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
