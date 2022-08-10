@@ -16,6 +16,7 @@ jobs:
     - name: Set variables
       run: |
         VER=$(cat env | awk {'print$2'})
+        echo $VER
         echo "VERSION=$VER" >> $GITHUB_ENV
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
