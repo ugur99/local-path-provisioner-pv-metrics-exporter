@@ -1,8 +1,8 @@
 name: "Code Scanning"
 
 on:
-  push:
-    branches: [ "main" ]
+  #push:
+  #  branches: [ "main" ]
   schedule:
     - cron: '0 0,8,12,17,22 * * 1'
   watch:
@@ -20,10 +20,10 @@ jobs:
           VER=$(cat env | awk {'print$2'})
           echo $VER
           echo "VERSION=$VER" >> $GITHUB_ENV
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: 'trivy-results-docker.sarif'
+      #- name: Upload Trivy scan results to GitHub Security tab
+      #  uses: github/codeql-action/upload-sarif@v1
+      #  with:
+      #    sarif_file: 'trivy-results-docker.sarif'
       - name: Run Trivy vulnerability scanner in fs mode
         uses: anandg112/trivy-action@feat/add-skip-dirs-option
         with:
@@ -35,11 +35,11 @@ jobs:
           output: 'trivy-results-fs.sarif'
           severity: 'CRITICAL'
           skip-dirs: "ignored-dir"
-      - name: Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: 'trivy-results-fs.sarif'
-      - name: DEBUG Upload Trivy scan results to GitHub Security tab
-        uses: github/codeql-action/upload-sarif@v1
-        with:
-          sarif_file: 'debug-trivy-results.sarif'
+      #- name: Upload Trivy scan results to GitHub Security tab
+      #  uses: github/codeql-action/upload-sarif@v1
+      #  with:
+      #    sarif_file: 'trivy-results-fs.sarif'
+      #- name: DEBUG Upload Trivy scan results to GitHub Security tab
+      #  uses: github/codeql-action/upload-sarif@v1
+      #  with:
+      #    sarif_file: 'debug-trivy-results.sarif'
