@@ -20,11 +20,11 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:${{ github.sha }}
+        tags: ugurozturk99/lp-exporter-deployment:latest, ugurozturk99/lp-exporter-deployment:v${{ github.run.id }}
         file: ./src/deployment/Dockerfile
     - name: Build and Push for lb-exporter-job
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: ugurozturk99/lb-exporter-job:latest,ugurozturk99/lp-exporter-job:${{ github.sha }}
+        tags: ugurozturk99/lb-exporter-job:latest,ugurozturk99/lp-exporter-job:v${{ github.run.id }}
         file: ./src/job/Dockerfile
