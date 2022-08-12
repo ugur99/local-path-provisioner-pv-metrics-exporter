@@ -24,10 +24,14 @@ all_pvc_list = []
 for key in os.environ:
     if os.environ["STORAGE_CLASS_NAME"]:
       storageClass = os.environ["STORAGE_CLASS_NAME"]
-    if os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"]:
-      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
     else:
-        registryUrl = os.environ["PUSHGATEWAY_URL"]
+      logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path") 
+      storageClass = "local-path"
+    if os.environ["PUSHGATEWAY_URL"]:
+      registryUrl = os.environ["PUSHGATEWAY_URL"]
+    else:
+      logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT ")
+      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
 while True:
   logger.info("Sleeping for 30 seconds...")
@@ -38,26 +42,29 @@ while True:
   all_pvc_list = []
   all_pvc_list_string = []
   node_list = []
-
+  
+  logger.debug("storageClass: " + storageClass + " registryUrl: " + registryUrl)
 
   for pvc in pvcs.items:
+    logger.debug("PVC: " + pvc.metadata.name + " in namespace: " + pvc.metadata.namespace + " has storage class: " + pvc.spec.storage_class_name)
+    if pvc.spec.storage_class_name == storageClass:
+      if pvc.status.phase == "Bound":
+
+        capacity = helper.convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
+        gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
+        push_to_gateway(registryUrl, job="projectbeta", registry=registry)
+        logger.debug("Pushed to registry: " + registryUrl + " job: projectbeta")
   
-      if pvc.spec.storage_class_name == storageClass:
-        if pvc.status.phase == "Bound":
+        if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
+          node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
   
-          capacity = helper.convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
-          gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
-          push_to_gateway(registryUrl, job="projectbeta", registry=registry)
-    
-          if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
-            node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
-    
-          all_pvc_list += [pvc.metadata.name]
-          all_pvc_list_string = ",".join(all_pvc_list)
+        all_pvc_list += [pvc.metadata.name]
+  
+  all_pvc_list_string = ",".join(all_pvc_list)
+  logger.debug("all_pvc_list_string: " + all_pvc_list_string)
   
   for node in node_list:
   
-
     k8s_client = client.ApiClient(incluster_config.load_incluster_config())
 
     # TODO: CREATE A NEW METHOD CALLED create_job instead of applying a template job file.
@@ -74,6 +81,5 @@ while True:
     fin.write(data)
     fin.close()
   
-    utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus",verbose=True)
-    time.sleep(30)
+    utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus")
   
