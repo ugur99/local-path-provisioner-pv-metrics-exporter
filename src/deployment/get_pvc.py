@@ -1,8 +1,7 @@
-from kubernetes import client, config, utils
-import time, os, shutil
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+from kubernetes import client, utils
+from prometheus_client import CollectorRegistry, push_to_gateway
 import prometheus_client as prom
-import incluster_config, helper
+import incluster_config, helper,time, os, shutil
 
 
 v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config()))
@@ -18,6 +17,8 @@ for key in os.environ:
       storageClass = os.environ["STORAGE_CLASS_NAME"]
     if os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"]:
       registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+    else:
+        registryUrl = os.environ["PUSHGATEWAY_URL"]
 
 while True:
   time.sleep(30)
@@ -47,6 +48,8 @@ while True:
   
 
     k8s_client = client.ApiClient(incluster_config.load_incluster_config())
+
+    # TODO: CREATE A NEW METHOD CALLED create_job instead of applying a template job file.
     shutil.copyfile("templates/job.yaml","job.yaml")
   
     yaml_file = 'job.yaml'

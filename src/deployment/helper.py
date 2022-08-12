@@ -1,6 +1,6 @@
 
-
-
+# Helper functions listed here to simplify the code
+ 
 def convert_size_string_to_bytes(size):
     unit = size[-2:]
     sz = float(size[:-2])

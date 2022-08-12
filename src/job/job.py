@@ -1,8 +1,7 @@
 from subprocess import run
-import os, time
-from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
+from prometheus_client import CollectorRegistry, push_to_gateway
 import prometheus_client as prom
-
+import os
 
 directory = '/node/'
 registry = CollectorRegistry()
@@ -16,7 +15,6 @@ for key in os.environ:
     nodeName = os.environ["NODE_NAME"]
     pvc = os.environ["PVC_NAMES"]
     podName = os.environ["POD_NAME"]
-    #registryUrl = os.environ["PROMETHEUS_PUSHGATEWAY_URL"]
     registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
 
@@ -26,6 +24,7 @@ gauge = prom.Gauge('local_volume_stats_used_bytes', 'local volume storage usage'
 for i in os.listdir(directory):
     for j in range(len(claims)):
         # IF PVC NAMES ARE NOT UNIQUE, THIS WILL NOT WORK
+        # TODO: FIX THIS TO HANDLES PVC NAMES WITH CONTAINING THE SAME STRING; E.G. pvc1, pvc11, pvc111
         if claims[j] in i:
             filename=(directory+"/"+i)
             gauge.labels(claims[j],nodeName).set(calculation(filename))

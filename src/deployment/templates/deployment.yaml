@@ -19,12 +19,16 @@ spec:
       labels:
         app: lp-exporter
     spec:
-      serviceAccountName: exporter
+      serviceAccountName: lp-metrics-exporter
       containers:
       - image: python:3.7
         name: python
         env:
-          - name: PROMETHEUS_PUSHGATEWAY_URL
+          # If pushgateway helm release name is different from "pushgateway"
+          # then you should specify pushgateway address as an environment variable
+          - name: PUSHGATEWAY_URL 
             value: "192.168.0.24:32457"
+          # If storage class name is different from "local-path" then you 
+          # should rename it here
           - name: STORAGE_CLASS_NAME
             value: "local-path"
