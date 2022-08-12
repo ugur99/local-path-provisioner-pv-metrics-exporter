@@ -20,32 +20,20 @@ gauge = prom.Gauge('local_volume_stats_capacity_bytes', 'local volume capacity',
 node_list = []
 all_pvc_list = []
 
-
-#for key in os.environ:
-#    if os.environ["STORAGE_CLASS_NAME"]:
-#      storageClass = os.environ["STORAGE_CLASS_NAME"]
-#    else:
-#      logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path") 
-#      storageClass = "local-path"
-#    if os.environ["PUSHGATEWAY_URL"]:
-#      registryUrl = os.environ["PUSHGATEWAY_URL"]
-#    else:
-#      logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT ")
-#      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
-
 try:
   os.environ["STORAGE_CLASS_NAME"]
+  storageClass = os.environ["STORAGE_CLASS_NAME"]
 except KeyError:
   logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path")
 else:
   storageClass = "local-path"
 try:
   os.environ["PUSHGATEWAY_URL"]
+  registryUrl = os.environ["PUSHGATEWAY_URL"]
 except KeyError:
   logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
 else:
   registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
-
 
 
 while True:
