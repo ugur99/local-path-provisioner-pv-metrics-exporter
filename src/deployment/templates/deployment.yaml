@@ -21,9 +21,13 @@ spec:
     spec:
       serviceAccountName: lp-metrics-exporter
       containers:
-      - image: python:3.7
+      - image: ugurozturk99/lp-exporter-deployment:v0.0.29-SNAPSHOT
         name: python
         env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.metadata.namespace
           # If pushgateway helm release name is different from "pushgateway"
           # then you should specify pushgateway address as an environment variable
           - name: PUSHGATEWAY_URL 

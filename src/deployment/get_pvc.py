@@ -35,6 +35,12 @@ except KeyError:
 else:
   logger.warning("JOB_LOG_LEVEL was set: " + os.environ["JOB_LOG_LEVEL"].upper())
   jobloglevel = os.environ["JOB_LOG_LEVEL"].upper()
+try:
+  os.environ["NAMESPACE"]
+  nameSpace = os.environ["NAMESPACE"]
+except KeyError:
+  logger.error("NAMESPACE was not set, exiting")
+  exit(1)
 
 
 while True:
@@ -90,7 +96,7 @@ while True:
     fin.write(data)
     fin.close()
   
-    utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus")
+    utils.create_from_yaml(k8s_client,yaml_file,namespace=nameSpace)
 
     # TODO: Write a loop to check if the jobs are completed
   

@@ -40,7 +40,7 @@ subjects:
   name: lp-metrics-exporter
   namespace: default
 ---
-apiVersion: 
+apiVersion: v1
 kind: Secret
 metadata:
   annotations:
