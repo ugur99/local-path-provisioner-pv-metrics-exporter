@@ -1,11 +1,17 @@
 from kubernetes import client, utils
 from prometheus_client import CollectorRegistry, push_to_gateway
 import prometheus_client as prom
-import incluster_config, helper,time, os, shutil
+import incluster_config, helper,time, os, shutil, logging
 
 
 v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config()))
 registry = CollectorRegistry()
+
+logger = logging.getLogger("exporterLogger")
+ConsoleOutputHandler = logging.StreamHandler()
+logger.addHandler(ConsoleOutputHandler)
+logger.setLevel(logging.DEBUG)
+
 pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 gauge = prom.Gauge('local_volume_stats_capacity_bytes', 'local volume capacity', ['persistentvolumeclaim','node'], registry=registry)
 node_list = []
@@ -21,7 +27,9 @@ for key in os.environ:
         registryUrl = os.environ["PUSHGATEWAY_URL"]
 
 while True:
+  logger.info("Sleeping for 30 seconds...")
   time.sleep(30)
+
   pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 
   all_pvc_list = []
