@@ -35,3 +35,6 @@ spec:
           # Default Log Level is INFO
           - name: LOG_LEVEL
             value: "INFO"
+          # Default Job Log Level is DEBUG
+          - name: JOB_LOG_LEVEL
+            value: "DEBUG"
