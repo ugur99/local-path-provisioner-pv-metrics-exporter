@@ -8,10 +8,10 @@ v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config())
 registry = CollectorRegistry()
 
 logger = logging.getLogger("exporterLogger")
-logger.setLevel(logging.DEBUG)
+logger.setLevel(logging.INFO)
 ConsoleOutputHandler = logging.StreamHandler()
 ConsoleOutputHandler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
 ConsoleOutputHandler.setFormatter(formatter)
 logger.addHandler(ConsoleOutputHandler)
 
@@ -23,14 +23,14 @@ all_pvc_list = []
 try:
   os.environ["STORAGE_CLASS_NAME"]
 except KeyError:
-  logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path")
+  logger.warning("STORAGE_CLASS_NAME was not set, defaulting to local-path")
   storageClass = "local-path"
 else:
   storageClass = os.environ["STORAGE_CLASS_NAME"]
 try:
   os.environ["PUSHGATEWAY_URL"]
 except KeyError:
-  logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
+  logger.warning("PUSHGATEWAY_URL was not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
   registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 else:
   registryUrl = os.environ["PUSHGATEWAY_URL"]
