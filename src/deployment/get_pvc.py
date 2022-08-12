@@ -31,10 +31,10 @@ try:
   os.environ["JOB_LOG_LEVEL"]
 except KeyError:
   logger.warning("JOB_LOG_LEVEL was not set, defaulting to DEBUG")
-  logLevel = "DEBUG"
+  jobloglevel = "DEBUG"
 else:
   logger.warning("JOB_LOG_LEVEL was set: " + os.environ["JOB_LOG_LEVEL"].upper())
-  logLevel = os.environ["JOB_LOG_LEVEL"].upper()
+  jobloglevel = os.environ["JOB_LOG_LEVEL"].upper()
 
 
 while True:
