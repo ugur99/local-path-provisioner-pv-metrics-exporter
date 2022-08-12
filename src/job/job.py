@@ -5,7 +5,7 @@ import prometheus_client as prom
 import os
 
 directory = '/node/'
-registry = CollectorRegistry(),
+registry = CollectorRegistry()
 logger = get_logger()
 
 def calculation(dir):
@@ -45,6 +45,7 @@ except KeyError:
 
 
 claims=pvc.split(',')
+logger.debug("PVC_NAMES: " + str(claims))
 gauge = prom.Gauge('local_volume_stats_used_bytes', 'local volume storage usage', ['persistentvolumeclaim','node'], registry=registry)
 
 for i in os.listdir(directory):
