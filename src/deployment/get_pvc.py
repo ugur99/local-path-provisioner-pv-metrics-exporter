@@ -27,6 +27,14 @@ except KeyError:
   registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 else:
   registryUrl = os.environ["PUSHGATEWAY_URL"]
+try:
+  os.environ["JOB_LOG_LEVEL"]
+except KeyError:
+  logger.warning("JOB_LOG_LEVEL was not set, defaulting to DEBUG")
+  logLevel = "DEBUG"
+else:
+  logger.warning("JOB_LOG_LEVEL was set: " + os.environ["JOB_LOG_LEVEL"].upper())
+  logLevel = os.environ["JOB_LOG_LEVEL"].upper()
 
 
 while True:
@@ -76,6 +84,7 @@ while True:
     data = fin.read()
     data = data.replace('NODES', node)
     data = data.replace('CLAIMS', all_pvc_list_string)
+    data = data.replace('JOBLOGLEVEL', jobloglevel)
     fin.close()
     fin = open(yaml_file, "wt")
     fin.write(data)

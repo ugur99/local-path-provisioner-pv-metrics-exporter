@@ -7,7 +7,7 @@ def get_logger():
         os.environ["LOG_LEVEL"]
     except KeyError:
         logger.warning("LOG_LEVEL was not set, defaulting to INFO")
-        logLevel = "INFO"
+        logLevel = "DEBUG"
     else:
         logger.warning("LOG_LEVEL was set: " + os.environ["LOG_LEVEL"].upper())
         logLevel = os.environ["LOG_LEVEL"].upper()
