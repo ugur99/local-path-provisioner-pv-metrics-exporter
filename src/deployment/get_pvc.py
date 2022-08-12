@@ -1,19 +1,20 @@
 from kubernetes import client, utils
 from prometheus_client import CollectorRegistry, push_to_gateway
 import prometheus_client as prom
-import incluster_config, helper,time, os, shutil, logging
+import incluster_config, helper,time, os, shutil
+from logger import get_logger
 
 
 v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config()))
 registry = CollectorRegistry()
 
-logger = logging.getLogger("exporterLogger")
-logger.setLevel(logging.INFO)
-ConsoleOutputHandler = logging.StreamHandler()
-ConsoleOutputHandler.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-ConsoleOutputHandler.setFormatter(formatter)
-logger.addHandler(ConsoleOutputHandler)
+logger = get_logger("exporterLogger")
+#logger.setLevel(logging.INFO)
+#ConsoleOutputHandler = logging.StreamHandler()
+#ConsoleOutputHandler.setLevel(logging.DEBUG)
+#formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+#ConsoleOutputHandler.setFormatter(formatter)
+#logger.addHandler(ConsoleOutputHandler)
 
 pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 gauge = prom.Gauge('local_volume_stats_capacity_bytes', 'local volume capacity', ['persistentvolumeclaim','node'], registry=registry)
@@ -37,6 +38,7 @@ else:
 
 
 while True:
+  # We can wait 30 sec to control the frequency of the metrics
   logger.info("Sleeping for 30 seconds...")
   time.sleep(30)
 
@@ -67,12 +69,13 @@ while True:
   
   all_pvc_list_string = ",".join(all_pvc_list)
   logger.debug("all_pvc_list_string: " + all_pvc_list_string)
+  logger.debug("node_list: " + str(node_list))
   
   for node in node_list:
   
     k8s_client = client.ApiClient(incluster_config.load_incluster_config())
 
-    # TODO: CREATE A NEW METHOD CALLED create_job instead of applying a template job file.
+    # TODO: Instead of template, we should construct the object directly using the client library.
     shutil.copyfile("templates/job.yaml","job.yaml")
   
     yaml_file = 'job.yaml'
@@ -88,5 +91,5 @@ while True:
   
     utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus")
 
-    # TODO: WRITE A CONTROL BLOCK TO CHECK SUCCESS OF JOB
+    # TODO: Write a loop to check if the jobs are completed
   
