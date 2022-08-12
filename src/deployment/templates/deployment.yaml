@@ -27,7 +27,7 @@ spec:
           - name: NAMESPACE
             valueFrom:
               fieldRef:
-                fieldPath: spec.metadata.namespace
+                fieldPath: metadata.namespace
           # If pushgateway helm release name is different from "pushgateway"
           # then you should specify pushgateway address as an environment variable
           - name: PUSHGATEWAY_URL 

@@ -75,6 +75,10 @@ spec:
       - image: python:3.7
         name: python
         env:
+          - name: NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
           # If pushgateway helm release name is different from "pushgateway"
           # then you should specify pushgateway address as an environment variable
           - name: PUSHGATEWAY_URL 
