@@ -21,17 +21,33 @@ node_list = []
 all_pvc_list = []
 
 
+#for key in os.environ:
+#    if os.environ["STORAGE_CLASS_NAME"]:
+#      storageClass = os.environ["STORAGE_CLASS_NAME"]
+#    else:
+#      logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path") 
+#      storageClass = "local-path"
+#    if os.environ["PUSHGATEWAY_URL"]:
+#      registryUrl = os.environ["PUSHGATEWAY_URL"]
+#    else:
+#      logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT ")
+#      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+
 for key in os.environ:
-    if os.environ["STORAGE_CLASS_NAME"]:
-      storageClass = os.environ["STORAGE_CLASS_NAME"]
-    else:
-      logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path") 
-      storageClass = "local-path"
-    if os.environ["PUSHGATEWAY_URL"]:
-      registryUrl = os.environ["PUSHGATEWAY_URL"]
-    else:
-      logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT ")
-      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+  try:
+    os.environ["STORAGE_CLASS_NAME"]
+  except KeyError:
+    print("STORAGE_CLASS_NAME not set, defaulting to local-path")
+  else:
+    storageClass = os.environ["STORAGE_CLASS_NAME"]
+  try:
+    os.environ["PUSHGATEWAY_URL"]
+  except KeyError:
+    print("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
+  else:
+    registryUrl = os.environ["PUSHGATEWAY_URL"]
+
+
 
 while True:
   logger.info("Sleeping for 30 seconds...")
@@ -59,6 +75,8 @@ while True:
           node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
   
         all_pvc_list += [pvc.metadata.name]
+      else:
+        logger.debug("Ignored...")
   
   all_pvc_list_string = ",".join(all_pvc_list)
   logger.debug("all_pvc_list_string: " + all_pvc_list_string)
@@ -82,4 +100,6 @@ while True:
     fin.close()
   
     utils.create_from_yaml(k8s_client,yaml_file,namespace="sisyphus")
+
+    # TODO: WRITE A CONTROL BLOCK TO CHECK SUCCESS OF JOB
   
