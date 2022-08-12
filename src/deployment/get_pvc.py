@@ -21,14 +21,12 @@ node_list = []
 all_pvc_list = []
 
 try:
-  os.environ["STORAGE_CLASS_NAME"]
   storageClass = os.environ["STORAGE_CLASS_NAME"]
 except KeyError:
   logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path")
 else:
   storageClass = "local-path"
 try:
-  os.environ["PUSHGATEWAY_URL"]
   registryUrl = os.environ["PUSHGATEWAY_URL"]
 except KeyError:
   logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
