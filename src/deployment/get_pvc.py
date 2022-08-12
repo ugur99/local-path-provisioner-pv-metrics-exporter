@@ -30,7 +30,7 @@ else:
 
 
 while True:
-  # We can wait 30 sec to control the frequency of the metrics
+  # We wait 30 sec to minimize/control the frequency of the metrics
   logger.info("Sleeping for 30 seconds...")
   time.sleep(30)
 

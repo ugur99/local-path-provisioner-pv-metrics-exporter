@@ -9,6 +9,7 @@ def get_logger():
         logger.warning("LOG_LEVEL was not set, defaulting to INFO")
         logLevel = "INFO"
     else:
+        logger.warning("LOG_LEVEL was set: " + os.environ["LOG_LEVEL"].upper())
         logLevel = os.environ["LOG_LEVEL"].upper()
 
     logger.setLevel(logging.getLevelName(logLevel))

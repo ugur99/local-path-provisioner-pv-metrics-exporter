@@ -32,5 +32,6 @@ spec:
           # should rename it here
           - name: STORAGE_CLASS_NAME
             value: "local-path"
+          # Default Log Level is INFO
           - name: LOG_LEVEL
             value: "INFO"
