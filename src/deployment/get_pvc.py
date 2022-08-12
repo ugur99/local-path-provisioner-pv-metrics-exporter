@@ -33,19 +33,18 @@ all_pvc_list = []
 #      logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT ")
 #      registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
-for key in os.environ:
-  try:
-    os.environ["STORAGE_CLASS_NAME"]
-  except KeyError:
-    print("STORAGE_CLASS_NAME not set, defaulting to local-path")
-  else:
-    storageClass = "local-path"
-  try:
-    os.environ["PUSHGATEWAY_URL"]
-  except KeyError:
-    print("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
-  else:
-    registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+try:
+  os.environ["STORAGE_CLASS_NAME"]
+except KeyError:
+  logger.warning("STORAGE_CLASS_NAME not set, defaulting to local-path")
+else:
+  storageClass = "local-path"
+try:
+  os.environ["PUSHGATEWAY_URL"]
+except KeyError:
+  logger.warning("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
+else:
+  registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
 
 
