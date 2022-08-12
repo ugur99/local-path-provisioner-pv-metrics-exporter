@@ -3,9 +3,8 @@ name: "Code Scanning"
 on:
   workflow_run:
     workflows: ["Docker Image CI"]
+    types: [completed]
 
-  #watch:
-  #  types: [started]
 
 jobs:
   Trivy-Scan:
