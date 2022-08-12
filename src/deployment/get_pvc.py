@@ -7,15 +7,7 @@ from logger import get_logger
 
 v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config()))
 registry = CollectorRegistry()
-
 logger = get_logger()
-#logger.setLevel(logging.INFO)
-#ConsoleOutputHandler = logging.StreamHandler()
-#ConsoleOutputHandler.setLevel(logging.DEBUG)
-#formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
-#ConsoleOutputHandler.setFormatter(formatter)
-#logger.addHandler(ConsoleOutputHandler)
-
 pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 gauge = prom.Gauge('local_volume_stats_capacity_bytes', 'local volume capacity', ['persistentvolumeclaim','node'], registry=registry)
 node_list = []
