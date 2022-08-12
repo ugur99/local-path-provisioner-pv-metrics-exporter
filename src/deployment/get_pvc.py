@@ -39,13 +39,13 @@ for key in os.environ:
   except KeyError:
     print("STORAGE_CLASS_NAME not set, defaulting to local-path")
   else:
-    storageClass = os.environ["STORAGE_CLASS_NAME"]
+    storageClass = "local-path"
   try:
     os.environ["PUSHGATEWAY_URL"]
   except KeyError:
     print("PUSHGATEWAY_URL not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
   else:
-    registryUrl = os.environ["PUSHGATEWAY_URL"]
+    registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
 
 
 
