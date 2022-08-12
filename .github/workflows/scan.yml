@@ -1,8 +1,8 @@
 name: "Code Scanning"
 
 on:
-  push:
-    branches: [ "main" ]
+  workflow_run:
+    workflows: ["Docker Image CI"]
 
   #watch:
   #  types: [started]
