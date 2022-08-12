@@ -8,7 +8,7 @@ from logger import get_logger
 v1 = client.CoreV1Api(client.ApiClient(incluster_config.load_incluster_config()))
 registry = CollectorRegistry()
 
-logger = get_logger("exporterLogger")
+logger = get_logger()
 #logger.setLevel(logging.INFO)
 #ConsoleOutputHandler = logging.StreamHandler()
 #ConsoleOutputHandler.setLevel(logging.DEBUG)
