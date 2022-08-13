@@ -62,5 +62,6 @@ for i in os.listdir(directory):
             logger.debug("Found PVC: " + claims[j] + " in directory: " + filename)
             gauge.labels(claims[j],nodeName).set(calculation(filename))
             #push_to_gateway(registryUrl, job="projectalpha", registry=registry)
-            push_to_gateway(registryUrl, job=nodeName, registry=registry)
+            jobName = nodeName + "_" + "usage_metrics" 
+            push_to_gateway(registryUrl, job=jobName, registry=registry)
             logger.debug("Pushed metrics to registry: " + registryUrl)

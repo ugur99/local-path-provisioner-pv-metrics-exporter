@@ -68,7 +68,8 @@ while True:
 
         capacity = helper.convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
         gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
-        push_to_gateway(registryUrl, job="projectbeta", registry=registry)
+        jobName = "capacity_metrics"
+        push_to_gateway(registryUrl, job=jobName, registry=registry)
         logger.debug("Pushed to registry: " + registryUrl + " job: projectbeta")
   
         if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
