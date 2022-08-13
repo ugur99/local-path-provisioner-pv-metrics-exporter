@@ -13,7 +13,7 @@ spec:
     spec:
       containers:
       - name: job
-        image: ugurozturk99/lp-exporter-job:v0.0.29-SNAPSHOT
+        image: ugurozturk99/lp-exporter-job:v0.0.29
         command: ["python3", "job.py"]
         env:
           - name: PROMETHEUS_PUSHGATEWAY_URL
