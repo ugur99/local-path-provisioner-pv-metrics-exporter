@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: lp-exporter-job
+  name: lp-exporter-job-NODES
 spec:
   ttlSecondsAfterFinished: 10
   template:
