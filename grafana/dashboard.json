@@ -169,7 +169,7 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
@@ -201,12 +201,14 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:61",
           "format": "bytes",
           "logBase": 1,
           "min": 0,
           "show": true
         },
         {
+          "$$hashKey": "object:62",
           "format": "bytes",
           "logBase": 1,
           "min": 0,
@@ -889,7 +891,7 @@
       "type": "table"
     }
   ],
-  "refresh": "1m",
+  "refresh": false,
   "schemaVersion": 36,
   "style": "dark",
   "tags": [
@@ -948,7 +950,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -979,6 +981,6 @@
   "timezone": "utc",
   "title": "Kubernetes / Local Persistent Volumes",
   "uid": "peR80gTGk",
-  "version": 38,
+  "version": 40,
   "weekStart": ""
 }
