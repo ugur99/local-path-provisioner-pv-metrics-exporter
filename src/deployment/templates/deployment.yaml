@@ -3,6 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: lp-exporter
+    exporter: lp-exporter-deployment
   name: lp-exporter
 spec:
   replicas: 1
@@ -18,6 +19,7 @@ spec:
     metadata:
       labels:
         app: lp-exporter
+        exporter: lp-exporter
     spec:
       serviceAccountName: lp-metrics-exporter
       containers:
