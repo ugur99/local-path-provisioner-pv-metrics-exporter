@@ -23,7 +23,7 @@ spec:
     spec:
       serviceAccountName: lp-metrics-exporter
       containers:
-      - image: ugurozturk99/lp-exporter-deployment:v0.0.29
+      - image: ugurozturk99/lp-exporter-deployment:v0.0.30-SNAPSHOT
         name: python
         env:
           - name: NAMESPACE
