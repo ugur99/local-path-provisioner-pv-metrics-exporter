@@ -5,8 +5,6 @@ This is a simple metrics exporter for the [local-path-provisioner](https://githu
 
 ## Getting Started
 
-
-
 Easy deployment of local-path-provisioner made it the of the most popular dynamic PV provisioning tool, especially used in dev environment. Since the local-path-provisioner is a `hostPath` based solution, It does not support any integrations to generate metrics such `kubelet_volume_stats_used_bytes` or `kubelet_volume_stats_capacity_bytes`. Some use cases and warnings for the `hostPath` solution are listed on the [kubernetes documentation](https://kubernetes.io/docs/concepts/storage/volumes/#hostpath). But since local-path-provisioner provides a dynamic provisioning solution it is a good alternative for development and testing environments in which data loss can be tolerated.
 
 Another alternative is `local` typed ones, but there are some limitations to use `local` type volumes too as stated in [sig-storage-local-static-provisioner best practices](https://github.com/kubernetes-sigs/sig-storage-local-static-provisioner/blob/master/docs/best-practices.md). So unless we have seperate partitions for each PV, we cannot use the metrics `kubelet_volume_stats.*` effectively, because it will show the total capacity and used bytes of the whole partition not the PV. Also It does not support `dynamic provisioning` and thats the another critical point for development and testing environments.
@@ -27,6 +25,7 @@ Take a look [grafana dashboard examples](grafana/README.md) and [alert examples]
 
 ## How to use?
 
+For deployment and usage, please take a look at the [deployment](deployment/README.md) page.
 
 ## Known Issues
 
@@ -34,4 +33,4 @@ Some known issues are listed in the [issues](known-issues.md) page.
 
 ## Disclaimer
 
-`This is not an official solution and it is not supported by Rancher. It is just a simple solution to generate metrics for local-path-provisioner. It is not a production ready solution and it is not tested in a production environment.`
+`This is not an official solution and it is not supported by Rancher. It is just a simple solution to generate metrics for local-path-provisioner by using prometheus and kubernetes python clients. It is not a production ready solution and it is not tested in a production environment.`

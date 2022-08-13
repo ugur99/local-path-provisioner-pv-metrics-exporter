@@ -56,6 +56,7 @@ metadata:
     app: lp-exporter
     exporter: lp-exporter-deployment
   name: lp-exporter
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -74,7 +75,7 @@ spec:
     spec:
       serviceAccountName: lp-metrics-exporter
       containers:
-      - image: python:3.7
+      - image: ugurozturk99/lp-exporter-deployment:v0.0.29-SNAPSHOT
         name: python
         env:
           - name: NAMESPACE
@@ -86,7 +87,7 @@ spec:
           - name: PUSHGATEWAY_URL 
             value: "192.168.0.24:32457"
           # If storage class name is different from "local-path" then you 
-          # should rename it here
+          # should specify it here
           - name: STORAGE_CLASS_NAME
             value: "local-path"
           # Default Log Level is INFO
