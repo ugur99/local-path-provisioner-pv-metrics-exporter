@@ -55,9 +55,8 @@ else:
   volumeProvisionPath = os.environ["VOLUMEPROVISIONPATH"]
 
 while True:
-  # We wait 30 sec to minimize/control the frequency of the metrics
-  logger.info("Sleeping for 30 seconds...")
-  time.sleep(30)
+  logger.info("Sleeping for 10 seconds...")
+  time.sleep(10)
 
   pvcs = v1.list_persistent_volume_claim_for_all_namespaces(watch=False)
 
@@ -113,4 +112,8 @@ while True:
     utils.create_from_yaml(k8s_client,yaml_file,namespace=nameSpace)
 
     # TODO: Write a loop to check if the jobs are completed
+
+  logger.info("Sleeping for 30 seconds...")
+  time.sleep(30)
+
   
