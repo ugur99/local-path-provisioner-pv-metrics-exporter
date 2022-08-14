@@ -17,7 +17,7 @@ spec:
         command: ["python3", "job.py"]
         env:
           - name: PUSHGATEWAY_URL
-            value: "192.168.0.24:32457"
+            value: "10.99.84.233:9091"
           - name: PVC_NAMES
             value: "CLAIMS"
           - name: LOG_LEVEL
