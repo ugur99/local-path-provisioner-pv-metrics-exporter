@@ -13,10 +13,10 @@ Another alternative is `local` typed ones, but there are some limitations to use
 We have two main components in this solution:
 
 ### lp-exporter
- The first one is the `lp-exporter` which talks to the API Server to get PVC names which are used local-path storage class and requested capacities respectively. It generates `local_volume_stats_capacity_bytes` metrics and pushes it to [pushgateway](https://github.com/prometheus/pushgateway). To get the used bytes for per PV, it generates a `job` for each different nodes that PVs are provisioned.
+ The first one is the `lp-exporter` which talks to the API Server to get PVC names which used local-path storage class and requested capacities of them respectively. It generates `local_volume_stats_capacity_bytes` metrics and pushes it to [pushgateway](https://github.com/prometheus/pushgateway). To get the used bytes for per PV, it generates a `job` for each different nodes that PVs are provisioned.
  
 ### lp-exporter-job
- Job is a simple code block to get used bytes for each PVs that are provisioned on that node and it pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
+Jjob consists of a simple python code blockk to get used bytes for each PVs that are provisioned on that node and it pushes the `local_volume_stats_used_bytes` metrics to the pushgateway.
 ![mainarchitecture](src/images/architecture-01.png)
 >Simple Illustration of the architecture
 
@@ -33,4 +33,4 @@ Some known issues are listed in the [issues](known-issues.md) page.
 
 ## Disclaimer
 
-`This is not an official solution and it is not supported by Rancher. It is just a simple solution to generate metrics for local-path-provisioner by using prometheus and kubernetes python clients. It is not a production ready solution and it is not tested in a production environment.`
+`This is not an official solution. It is just a simple solution to generate metrics for local-path-provisioner by using prometheus/kubernetes python clients and prometheus pushgateway. It is not tested in a production environment.`
