@@ -16,7 +16,7 @@ spec:
       labels:
         severity: critical
       annotations:
-        description: No Input From Container.
+        description: Volume Usage is at the critical level
         summary: "Volume Usage of the Following PVs is more than 80%"
         message: |
                    Volume Usage of {{ $labels.persistentvolumeclaim}} is {{ $value }}
