@@ -5,11 +5,10 @@ As a requirementi you need to have prometheus pushgateway installed in your clus
 You can apply the deployment files in the [deployment](deployment.yaml) page to your cluster. You may want to change the namespace of the resources depending on your cluster configuration/preferences. Some environement variables are defined in the deployment files. You can change them according to your needs.
 
 ```
-          # If pushgateway helm release name is different from "pushgateway" OR 
-          # your puhsgateway deployment is not in the same namespace as this deployment
-          # then you should specify pushgateway address as an environment variable
-          # TODO: PUSHGATEWAY_URL VARIABLE NAME WILL BE REPLACED BY PUSHGATEWAY_ADDRESS
-          - name: PUSHGATEWAY_URL 
+          # If helm release name of pushgateway is different from "pushgateway" OR 
+          # you are planning to deploy exporter to different namespace than the one that pushgateway deployed to
+          # then you have to specify pushgateway address as an environment variable
+          - name: PUSHGATEWAY_ADDRESS 
             value: "10.99.84.233:9091"
 
           # If storage class name is different from "local-path" then you 
@@ -24,4 +23,8 @@ You can apply the deployment files in the [deployment](deployment.yaml) page to 
           # Default Job Log Level is DEBUG
           - name: JOB_LOG_LEVEL
             value: "DEBUG"
+
+          # Default Volume Provision Path is /opt/local-path-provisioner
+          #- name: VOLUMEPROVISIONPATH
+          #  value: "/opt/local-path-provisioner"
 ```
