@@ -2,7 +2,7 @@
 
 As a requirementi you need to have prometheus pushgateway installed in your cluster. You can install it by using the [pushgateway helm chart](https://artifacthub.io/packages/helm/prometheus-community/prometheus-pushgateway). 
 
-You can apply the deployment files in the [deployment](deployment.yaml) page to your cluster. You may want to change the namespace of the resources depending on your cluster configuration/preferences. Some environement variables are defined in the deployment files. You can change them according to your needs.
+You can apply the deployment files in the [deployment](deployment.yaml) page to your cluster. You may want to change the namespace of the resources depending on your cluster configuration/preferences, `default namespace is local-path-exporter`. Some environement variables are defined in the deployment files. You can change them according to your needs.
 
 ```
           # If helm release name of pushgateway is different from "pushgateway" OR 

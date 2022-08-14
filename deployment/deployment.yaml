@@ -1,9 +1,14 @@
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: local-path-exporter
+---
+apiVersion: v1
 automountServiceAccountToken: true
 kind: ServiceAccount
 metadata:
   name: lp-metrics-exporter
-  namespace: default
+  namespace: local-path-exporter
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
@@ -38,7 +43,7 @@ roleRef:
 subjects:
 - kind: ServiceAccount
   name: lp-metrics-exporter
-  namespace: default
+  namespace: local-path-exporter
 ---
 apiVersion: v1
 kind: Secret
@@ -46,7 +51,7 @@ metadata:
   annotations:
     kubernetes.io/service-account.name: lp-metrics-exporter
   name: secret-sa-lp-metrics-exporter
-  namespace: default
+  namespace: local-path-exporter
 type: kubernetes.io/service-account-token
 ---
 apiVersion: apps/v1
@@ -56,7 +61,7 @@ metadata:
     app: lp-exporter
     exporter: lp-exporter-deployment
   name: lp-exporter
-  namespace: default
+  namespace: local-path-exporter
 spec:
   replicas: 1
   selector:
