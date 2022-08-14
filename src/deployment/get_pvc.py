@@ -21,17 +21,17 @@ except KeyError:
 else:
   storageClass = os.environ["STORAGE_CLASS_NAME"]
 try:
-  os.environ["PUSHGATEWAY_URL"]
+  os.environ["PUSHGATEWAY_ADDRESS"]
 except KeyError:
   try:
      os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"]
-     logger.warning("PUSHGATEWAY_URL was not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
-     registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+     logger.warning("PUSHGATEWAY_ADDRESS was not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
+     registryAddress = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
   except KeyError:
-    logger.error("PUSHGATEWAY_URL and PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST were not set, exiting") 
+    logger.error("PUSHGATEWAY_ADDRESS and PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST were not set, exiting") 
     exit(1)
 else:
-  registryUrl = os.environ["PUSHGATEWAY_URL"]
+  registryAddress = os.environ["PUSHGATEWAY_ADDRESS"]
 try:
   os.environ["JOB_LOG_LEVEL"]
 except KeyError:
@@ -46,7 +46,13 @@ try:
 except KeyError:
   logger.error("NAMESPACE was not set, exiting")
   exit(1)
-
+try:
+  os.environ["VOLUMEPROVISIONPATH"]
+except KeyError:
+  logger.warning("VOLUMEPROVISIONPATH was not set, defaulting to '/opt/local-path-provisioner'")
+  volumeProvisionPath = "/opt/local-path-provisioner"
+else:
+  volumeProvisionPath = os.environ["VOLUMEPROVISIONPATH"]
 
 while True:
   # We wait 30 sec to minimize/control the frequency of the metrics
@@ -59,7 +65,7 @@ while True:
   all_pvc_list_string = []
   node_list = []
   
-  logger.debug("storageClass: " + storageClass + " registryUrl: " + registryUrl)
+  logger.debug("storageClass: " + storageClass + " registryAddress: " + registryAddress)
 
   for pvc in pvcs.items:
     logger.debug("PVC: " + pvc.metadata.name + " in namespace: " + pvc.metadata.namespace + " has storage class: " + pvc.spec.storage_class_name)
@@ -69,8 +75,8 @@ while True:
         capacity = helper.convert_size_string_to_bytes(pvc.spec.resources.requests['storage'])
         gauge.labels(pvc.metadata.name,pvc.metadata.annotations['volume.kubernetes.io/selected-node']).set(capacity)
         jobName = "capacity_metrics"
-        push_to_gateway(registryUrl, job=jobName, registry=registry)
-        logger.debug("Pushed to registry: " + registryUrl + " job: projectbeta")
+        push_to_gateway(registryAddress, job=jobName, registry=registry)
+        logger.debug("Pushed to registry: " + registryAddress + " job: projectbeta")
   
         if pvc.metadata.annotations['volume.kubernetes.io/selected-node'] not in node_list:
           node_list += [pvc.metadata.annotations['volume.kubernetes.io/selected-node']]
@@ -97,6 +103,8 @@ while True:
     data = data.replace('NODES', node)
     data = data.replace('CLAIMS', all_pvc_list_string)
     data = data.replace('JOBLOGLEVEL', jobloglevel)
+    data = data.replace('PGWADRESS', registryAddress)
+    data = data.replace('VMPPATH', volumeProvisionPath)
     fin.close()
     fin = open(yaml_file, "wt")
     fin.write(data)

@@ -85,16 +85,19 @@ spec:
           # If pushgateway helm release name is different from "pushgateway" OR 
           # your puhsgateway deployment is not in the same namespace as this deployment
           # then you should specify pushgateway address as an environment variable
-          # TODO: PUSHGATEWAY_URL VARIABLE NAME WILL BE REPLACED BY PUSHGATEWAY_ADDRESS
-          #- name: PUSHGATEWAY_URL 
+          # TODO: PUSHGATEWAY_ADDRESS VARIABLE NAME WILL BE REPLACED BY PUSHGATEWAY_ADDRESS
+          #- name: PUSHGATEWAY_ADDRESS 
           #  value: "10.99.84.233:9091"
           # If storage class name is different from "local-path" then you 
           # should specify it here
-          - name: STORAGE_CLASS_NAME
-            value: "local-path"
+          #- name: STORAGE_CLASS_NAME
+          #  value: "local-path"
           # Default Log Level is INFO
-          - name: LOG_LEVEL
-            value: "INFO"
+          #- name: LOG_LEVEL
+          #  value: "INFO"
           # Default Job Log Level is DEBUG
-          - name: JOB_LOG_LEVEL
-            value: "DEBUG"
+          #- name: JOB_LOG_LEVEL
+          #  value: "DEBUG"
+          # Default Volume Provision Path is /opt/local-path-provisioner
+          #- name: VOLUMEPROVISIONPATH
+          #  value: "/opt/local-path-provisioner"

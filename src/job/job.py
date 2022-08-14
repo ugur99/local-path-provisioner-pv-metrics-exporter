@@ -22,17 +22,17 @@ except KeyError:
   exit(1)
 
 try:
-  os.environ["PUSHGATEWAY_URL"]
+  os.environ["PUSHGATEWAY_ADDRESS"]
 except KeyError:
   try:
      os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"]
-     logger.warning("PUSHGATEWAY_URL was not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
-     registryUrl = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
+     logger.warning("PUSHGATEWAY_ADDRESS was not set, defaulting to PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST:PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT")
+     registryAddress = os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST"] + ":" + os.environ["PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_PORT"]
   except KeyError:
-    logger.error("PUSHGATEWAY_URL and PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST were not set, exiting") 
+    logger.error("PUSHGATEWAY_ADDRESS and PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST were not set, exiting") 
     exit(1)
 else:
-  registryUrl = os.environ["PUSHGATEWAY_URL"]  
+  registryAddress = os.environ["PUSHGATEWAY_ADDRESS"]  
 
 try:
   os.environ["PVC_NAMES"]
@@ -61,7 +61,7 @@ for i in os.listdir(directory):
             filename=(directory+"/"+i)
             logger.debug("Found PVC: " + claims[j] + " in directory: " + filename)
             gauge.labels(claims[j],nodeName).set(calculation(filename))
-            #push_to_gateway(registryUrl, job="projectalpha", registry=registry)
+            #push_to_gateway(registryAddress, job="projectalpha", registry=registry)
             jobName = nodeName + "_" + "usage_metrics" 
-            push_to_gateway(registryUrl, job=jobName, registry=registry)
-            logger.debug("Pushed metrics to registry: " + registryUrl)
+            push_to_gateway(registryAddress, job=jobName, registry=registry)
+            logger.debug("Pushed metrics to registry: " + registryAddress)
