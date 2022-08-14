@@ -1,8 +1,8 @@
-name: "Code Scanning"
+name: "Vulnerability Scanning"
 
 on:
   workflow_run:
-    workflows: ["Docker Image CI"]
+    workflows: ["Docker Build"]
     types: [completed]
 
 
