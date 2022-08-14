@@ -1,5 +1,5 @@
 # Local Path Provisioner Metrics Exporter
-[![Docker Image CI](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml) [![Code Scanning](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/scan.yml/badge.svg?branch=main)](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/scan.yml)
+[![Docker Build](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml/badge.svg?branch=main)](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/docker-image.yml) [![Vulnerability Scanning](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/scan.yml/badge.svg?branch=main)](https://github.com/ugur99/local-path-pv-metrics-exporter/actions/workflows/scan.yml)
 
 This is a simple metrics exporter for the [local-path-provisioner](https://github.com/rancher/local-path-provisioner) or any `hostPath` typed PersistentVolumes that share the same provisioned path on the hosts. It generates `local_volume_stats_capacity_bytes` and `local_volume_stats_used_bytes` metrics for the persistent volumes `PV`  based on the `hostPath` solution.
 
