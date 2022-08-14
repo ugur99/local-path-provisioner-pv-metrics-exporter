@@ -6,7 +6,7 @@ You can apply the deployment files in the [deployment](deployment.yaml) page to 
 
 ```
           # If helm release name of pushgateway is different from "pushgateway" OR 
-          # you are planning to deploy exporter to different namespace than the one that pushgateway deployed to
+          # you are planning to deploy exporter to another namespace rather than the one that pushgateway deployed to
           # then you have to specify pushgateway address as an environment variable
           - name: PUSHGATEWAY_ADDRESS 
             value: "10.99.84.233:9091"
