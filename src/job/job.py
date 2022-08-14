@@ -17,6 +17,7 @@ def calculation(dir):
 try:
   os.environ["NODE_NAME"]
   nodeName = os.environ["NODE_NAME"]
+  logger.debug("Node name: %s", nodeName)
 except KeyError:
   logger.error("NODE_NAME was not set, please check the env variables.")
   exit(1)
@@ -32,11 +33,13 @@ except KeyError:
     logger.error("PUSHGATEWAY_ADDRESS and PUSHGATEWAY_PROMETHEUS_PUSHGATEWAY_SERVICE_HOST were not set, exiting") 
     exit(1)
 else:
-  registryAddress = os.environ["PUSHGATEWAY_ADDRESS"]  
+  registryAddress = os.environ["PUSHGATEWAY_ADDRESS"]
+  logger.debug("Pushgateway address: %s", registryAddress)  
 
 try:
   os.environ["PVC_NAMES"]
   pvc = os.environ["PVC_NAMES"]
+  logger.debug("PVC names: %s", pvc)
 except KeyError:
   logger.error("PVC_NAMES was not set, please check the env variables.")
   exit(1)
@@ -44,6 +47,7 @@ except KeyError:
 try:
   os.environ["POD_NAME"]
   podName = os.environ["POD_NAME"]
+  logger.debug("Pod name: %s", podName)
 except KeyError:
   logger.error("POD_NAME was not set, please check the env variables.")
   exit(1)
